@@ -4,8 +4,8 @@ from termcolor import colored
 
 def initArgs():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-name', dest='name', type=str, help='client name')
-    parser.add_argument('-config', dest='config', type=str, help='config file path')
+    parser.add_argument('-name', dest='name', default='client', type=str, help='client name')
+    parser.add_argument('-config', dest='config', type=str, help='config file path, like: ./openssl.cnf')
     return parser.parse_args()
 
 def printTitle(strings):

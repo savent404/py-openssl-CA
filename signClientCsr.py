@@ -4,7 +4,7 @@ from termcolor import colored
 
 def initArgs():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-name', dest='name', type=str, help='client csr file path')
+    parser.add_argument('-name', dest='name', type=str, help='client csr file path, like: ./name.csr.pem')
     return parser.parse_args()
 
 def printTitle(strings):

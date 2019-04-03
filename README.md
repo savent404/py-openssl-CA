@@ -2,13 +2,10 @@
 use python to use openssl CA function
 
 
-## CAgenrate.py
-生成CA的私钥与证书, 输出后的文件结构如下。
-``` shell
-.
-├── crt
-│   └── [name]_cert.pem
-└── private
-    └── [name]_key.pem
-```
-其中private文件下为CA的私钥，而crt文件夹下为用私钥加密的证书
+# 文件说明
+- genrootdir.py 生成CA根证书以及其他相关文件目录结构
+- genClientRq.py 生成网站的密钥以及请求证书
+- signClientCsr.py 通过输入的请求颁发证书
+
+# 使用说明
+`python signClientCsr.py -h`即可查看文件的输入参数帮助，genClientRq.py同理
