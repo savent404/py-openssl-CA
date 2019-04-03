@@ -3,7 +3,7 @@ import subprocess
 from termcolor import colored
 
 def printTitle(strings):
-    print(colored(strings, 'yellow'))
+    print('\r\n' + colored(strings, 'yellow'))
 
 def checkCode(code):
     if code is not 0:
@@ -23,9 +23,11 @@ def genConfigFile():
     f.close()
     checkCode(0)
 
+
 def genBasicConstructure():
     printTitle('Going to gen basic constructure')
-    returnCode = subprocess.call('mkdir certs crl newcerts private && touch index.txt && echo 1000 > serial', shell=True)
+    cmd = 'mkdir certs crl newcerts private && touch index.txt && echo 1000 > serial'
+    returnCode = subprocess.call(cmd, shell=True)
     checkCode(returnCode)
 
 def createRootKey():
@@ -41,9 +43,15 @@ def createRootCert():
     returnCode = subprocess.call(cmdLine, shell=True)
     checkCode(returnCode)
 
+def verifyRootCertificate():
+    printTitle('Going to verify the root certificate')
+    returnCode = subprocess.call('openssl x509 -noout -text -in certs/ca.cert.pem', shell=True)
+    checkCode(returnCode)
+
 if __name__=='__main__':
     genBasicConstructure()
     genConfigFile()
     createRootKey()
     createRootCert()
+    verifyRootCertificate()
 
