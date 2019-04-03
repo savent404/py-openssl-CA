@@ -1,8 +1,18 @@
 import os
 import subprocess
+from termcolor import colored
+
+def printTitle(strings):
+    print(colored(strings, 'yellow'))
+
+def checkCode(code):
+    if code is not 0:
+        print(colored('\tFail', 'red'))
+    else:
+        print(colored('\tOk', 'green'))
 
 def genConfigFile():
-    print('Going to gen openssl.cnf')
+    printTitle('Going to gen openssl.cnf')
     f = open('config.tmp', 'r')
     contents = f.read()
     f.close()
@@ -11,25 +21,29 @@ def genConfigFile():
     contents = contents.replace("pydir", os.getcwd())
     f.write(contents)
     f.close()
-    print('\tOK')
+    checkCode(0)
 
 def genBasicConstructure():
-    print('Going to gen basic constructure')
+    printTitle('Going to gen basic constructure')
     returnCode = subprocess.call('mkdir certs crl newcerts private && touch index.txt && echo 1000 > serial', shell=True)
-    if returnCode is not 0:
-        print('\tFail')
-    else:
-        print('\tOk')
+    checkCode(returnCode)
+
 def createRootKey():
-    print('Going to create Root Key')
+    printTitle('Going to create Root Key')
     returnCode = subprocess.call('openssl genrsa -aes256 -out private/ca.key.pem 4096', shell=True)
-    if returnCode is not 0:
-        print('\tFail')
-    else:
-        print('\tOk')
+    checkCode(returnCode)
+
+def createRootCert():
+    printTitle('Going to create Root Certificate')
+    nowDir = os.getcwd()
+    cmdLine = 'openssl req -config ' + os.getcwd() + '/openssl.cnf'  + ' -key private/ca.key.pem -new -x509 -days 7300 -sha256 -extensions v3_ca -out certs/ca.cert.pem'
+    printTitle(cmdLine)
+    returnCode = subprocess.call(cmdLine, shell=True)
+    checkCode(returnCode)
 
 if __name__=='__main__':
     genBasicConstructure()
     genConfigFile()
     createRootKey()
+    createRootCert()
 
