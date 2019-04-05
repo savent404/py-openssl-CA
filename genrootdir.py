@@ -26,7 +26,7 @@ def genConfigFile():
 
 def genBasicConstructure():
     printTitle('Going to gen basic constructure')
-    cmd = 'mkdir certs crl newcerts private && touch index.txt && echo 1000 > serial'
+    cmd = 'mkdir certs crl newcerts private && ' + 'echo > index.txt && echo 1000 > serial'
     returnCode = subprocess.call(cmd, shell=True)
     checkCode(returnCode)
 
