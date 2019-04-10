@@ -18,7 +18,8 @@ def genConfigFile():
     f.close()
 
     f = open('openssl.cnf', 'w+')
-    contents = contents.replace("pydir", os.getcwd())
+    dirstr = os.getcwd()
+    contents = contents.replace("pydir", dirstr.replace("\\", "/"))
     f.write(contents)
     f.close()
     checkCode(0)
@@ -26,7 +27,13 @@ def genConfigFile():
 
 def genBasicConstructure():
     printTitle('Going to gen basic constructure')
-    cmd = 'mkdir certs crl newcerts private && touch index.txt && echo 1000 > serial'
+    cmd = 'mkdir certs crl newcerts private'
+    returnCode = subprocess.call(cmd, shell=True)
+    checkCode(returnCode)
+    cmd = 'echo 1000 > serial'
+    returnCode = subprocess.call(cmd, shell=True)
+    checkCode(returnCode)
+    cmd = 'touch index.txt'
     returnCode = subprocess.call(cmd, shell=True)
     checkCode(returnCode)
 
